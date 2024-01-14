@@ -11,8 +11,6 @@ namespace HouseOfReps
   {
     private List<State> states;
 
-    /* "year","state","state_po","state_fips","state_cen","state_ic","office","candidate","party_detailed","writein","candidatevotes","totalvotes","version","notes","party_simplified" */
-
     internal States(string file)
     {
       this.states = new List<State>(50);
@@ -122,6 +120,46 @@ namespace HouseOfReps
     IEnumerator IEnumerable.GetEnumerator()
     {
       return ((IEnumerable)this.states).GetEnumerator();
+    }
+
+    private int RequiredReps()
+    {
+      int rep_max = 0;
+      int target_representation = 30000;
+      while (this.GetTotalPop() / target_representation >= rep_max)
+      {
+        target_representation += 10000;
+        rep_max += 100;
+      }
+
+      Console.WriteLine(rep_max);
+      Console.ReadKey(true);
+      return (int)this.GetTotalPop() / target_representation;
+    }
+
+    public void CalculateHouse()
+    {
+      var requiredReps = this.RequiredReps();
+      while (this.Reps < requiredReps)
+      {
+        this.AddRep();
+      }
+    }
+
+    public void WriteFullStatus()
+    {
+      var avg = this.GetPRAvg();
+      var std = this.StandardDeviation();
+      Console.SetCursorPosition(0, 0);
+      Console.WriteLine("After {0,4} reps, current average {1}, std dev: {2}", this.Reps, avg, std);
+      Console.WriteLine("Current largest deviant {0}: {1}", this.LargestDeviant()?.Name ?? "None", this.LargestDeviation());
+
+      var stateName = this.GetStatesSortedOnReversePop();
+
+      foreach (var (state, index) in stateName.Select((value, i) => (value, i)))
+      {
+        Console.WriteLine("  {0,2}. {1}", index + 1, state.PrintStatus(avg, std));
+      }
     }
   }
 }
