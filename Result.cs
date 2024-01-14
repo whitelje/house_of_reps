@@ -23,9 +23,12 @@ namespace HouseOfReps
 
     protected int Reps { get; }
 
-    public string GetParty()
+    public string Party
     {
-      return this.party;
+      get
+      {
+        return this.party;
+      }
     }
   }
 }
