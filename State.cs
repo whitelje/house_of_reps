@@ -1,42 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="State.cs" company="Jake Whiteley">
+// Copyright (c) Jake Whiteley. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
 
-namespace house_of_reps
+namespace HouseOfReps
 {
+  using System;
+  using System.Globalization;
+  using System.Text;
+
   internal class State
   {
-    private readonly String _name;
-    private readonly int _pop;
-    private int _reps;
-    private int _expected;
+    private readonly int expected;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="State"/> class.
+    /// </summary>
+    /// <param name="name">Name of State.</param>
+    /// <param name="pop">Population of State.</param>
+    /// <param name="expected">Expected number of reps.</param>
     public State(string name, int pop, int expected)
     {
-      this._name = name;
-      this._pop = pop;
-      this._reps = 1;
-      this._expected = expected;
+      this.Name = name;
+      this.Pop = pop;
+      this.Reps = 1;
+      this.expected = expected;
     }
-    public State(string name, int pop )
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="State"/> class.
+    /// </summary>
+    /// <param name="name">Name of State.</param>
+    /// <param name="pop">Population of State.</param>
+    public State(string name, int pop)
     {
-      this._name = name;
-      this._pop = pop;
-      this._reps = 1;
-      this._expected = 0;
+      this.Name = name;
+      this.Pop = pop;
+      this.Reps = 1;
+      this.expected = 0;
     }
-    public String Name { get { return _name; } }
-    public int Pop { get { return _pop; } }
-    public int Reps { get { return _reps; } }
-    public int PR { get { return _pop / _reps; } }
-    public double Pri {  get { return _pop / Math.Sqrt((Reps + 1) * (Reps)); } }
+
+    public string Name { get; }
+
+    public int Pop { get; }
+
+    public int Reps { get; private set; }
+
+    public int PR => this.Pop / this.Reps;
+
+    public double Pri => this.Pop / Math.Sqrt((this.Reps + 1) * this.Reps);
 
     public void AddRep()
     {
-      _reps++;
+      this.Reps++;
     }
 
     /* Prints _name */
@@ -45,13 +61,13 @@ namespace house_of_reps
       StringBuilder sb = new StringBuilder();
       NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
       nfi.NumberDecimalDigits = 0;
-      return sb.AppendFormat("{0,-15}", Name)
+      return sb.AppendFormat("{0,-15}", this.Name)
         .Append('\t')
-        .AppendFormat("{0,-10:N}", PR.ToString("N",nfi))
-        .AppendFormat("{0,11:N} ", ((int)(avg - PR)).ToString("N",nfi))
-        .AppendFormat("{0,11:F4}", (avg - PR) / std)
-        .AppendFormat("{0, 5}", Reps)
-        .AppendFormat("{0, 6}", _reps == _expected)
+        .AppendFormat("{0,-10:N}", this.PR.ToString("N", nfi))
+        .AppendFormat("{0,11:N} ", ((int)(avg - this.PR)).ToString("N", nfi))
+        .AppendFormat("{0,11:F4}", (avg - this.PR) / std)
+        .AppendFormat("{0, 5}", this.Reps)
+        .AppendFormat("{0, 6}", this.Reps == this.expected)
         .ToString();
     }
   }

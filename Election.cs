@@ -1,17 +1,19 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="Election.cs" company="Jake Whiteley">
+// Copyright (c) Jake Whiteley. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
 
-namespace house_of_reps
+namespace HouseOfReps
 {
+  using System;
+  using System.Collections.Generic;
+  using Microsoft.VisualBasic.FileIO;
+
   internal class Election
   {
-    readonly SortedList<string, bool> _elections = new(50);
-    public Election( string file, int year )
+    private readonly SortedList<string, bool> elections = new(50);
+
+    public Election(string file, int year, States states)
     {
       using TextFieldParser tfp = new(file);
       tfp.SetDelimiters(",");
@@ -23,16 +25,23 @@ namespace house_of_reps
         {
           throw new FormatException("Not enough fields in line");
         }
+
         if (!int.TryParse(fields[0], out int parseYear))
         {
           throw new FormatException("Couldn't parse year: " + fields[0]);
         }
-        if (parseYear != year) continue;
+
+        if (parseYear != year)
+        {
+          continue;
+        }
+
         if (!int.TryParse(fields[10], out int votes))
         {
           throw new FormatException("Couldn't parse votes: " + fields[10]);
         }
 
+/* "year","state","state_po","state_fips","state_cen","state_ic","office","candidate","party_detailed","writein","candidatevotes","totalvotes","version","notes","party_simplified" */
       }
     }
 
@@ -40,12 +49,13 @@ namespace house_of_reps
     {
       int dem = 0;
       int rep = 0;
-      foreach ( State st in states )
+      foreach (State st in states)
       {
-        if (_elections[st.Name])
+        if (this.elections[st.Name])
         {
           dem += st.Reps + 2;
-        } else
+        }
+        else
         {
           rep += st.Reps + 2;
         }
