@@ -9,7 +9,7 @@ namespace HouseOfReps
   {
     private readonly string party;
 
-    public Result(string party, int reps)
+    public Result(string party, double reps)
     {
       this.party = party;
       this.Reps = reps;
@@ -21,7 +21,7 @@ namespace HouseOfReps
       this.Reps = 0;
     }
 
-    protected int Reps { get; }
+    public double Reps { get; set; }
 
     public string Party
     {

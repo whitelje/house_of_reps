@@ -12,6 +12,7 @@ namespace HouseOfReps
   internal class State
   {
     private readonly int expected;
+    private readonly List<Result> results;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="State"/> class.
@@ -25,6 +26,7 @@ namespace HouseOfReps
       this.Pop = pop;
       this.Reps = 1;
       this.expected = expected;
+      this.results = [];
     }
 
     /// <summary>
@@ -34,10 +36,11 @@ namespace HouseOfReps
     /// <param name="pop">Population of State.</param>
     public State(string name, int pop)
     {
-      this.Name = name;
+      this.Name = name.ToUpper();
       this.Pop = pop;
       this.Reps = 1;
       this.expected = 0;
+      this.results = [];
     }
 
     public string Name { get; }
@@ -49,6 +52,8 @@ namespace HouseOfReps
     public int PR => this.Pop / this.Reps;
 
     public double Pri => this.Pop / Math.Sqrt((this.Reps + 1) * this.Reps);
+
+    public List<Result> Results => this.results;
 
     public void AddRep()
     {

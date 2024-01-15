@@ -33,7 +33,7 @@ namespace HouseOfReps
         }
       }
 
-      this.Reps = 50;
+      this.CalculateHouse();
     }
 
     public int Reps { get; private set; }
@@ -133,7 +133,6 @@ namespace HouseOfReps
       }
 
       Console.WriteLine(rep_max);
-      Console.ReadKey(true);
       return (int)this.GetTotalPop() / target_representation;
     }
 

@@ -9,25 +9,26 @@ namespace HouseOfReps // Note: actual namespace depends on the project name.
   {
     public static void Main(string[] args)
     {
-      Console.SetWindowSize(80, 54);
+      // Console.SetWindowSize(80, 54);
       var states = new States("2000_census.csv");
       Console.WriteLine("Loaded States");
 
-      while (true)
-      {
-        states.WriteFullStatus();
-        WriteElection(new Election("2004_electoral.csv", 2004, states).ComputeElectoralCollege(states));
-        var val = Console.ReadKey(true).KeyChar;
-        if (val == 'q')
-        {
-            break;
-        }
-      }
+      states.WriteFullStatus();
+      Console.WriteLine("Electoral College");
+      Console.WriteLine();
+      WriteElection(new Election("1976-2020-president_nodc.csv", 2000, states).ComputeElectoralCollege(states));
+      Console.WriteLine();
+      Console.WriteLine("House of Reps");
+      Console.WriteLine();
+      WriteElection(new Election("1976-2020-president_nodc.csv", 2000, states).ComputeHouseOfReps(states));
     }
 
-    internal static void WriteElection(Tuple<int, int> results)
+    internal static void WriteElection(Dictionary<string, int> results)
     {
-      Console.WriteLine("Dem: {0,4}, Rep: {1,4}", results.Item1, results.Item2);
+      foreach (KeyValuePair<string, int> res in results)
+      {
+        Console.WriteLine("{0}: {1}", res.Key, res.Value);
+      }
     }
   }
 }
