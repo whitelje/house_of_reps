@@ -122,20 +122,6 @@ namespace HouseOfReps
       return ((IEnumerable)this.states).GetEnumerator();
     }
 
-    private int RequiredReps()
-    {
-      int rep_max = 0;
-      int target_representation = 30000;
-      while (this.GetTotalPop() / target_representation >= rep_max)
-      {
-        target_representation += 10000;
-        rep_max += 100;
-      }
-
-      Console.WriteLine(rep_max);
-      return (int)this.GetTotalPop() / target_representation;
-    }
-
     public void CalculateHouse()
     {
       var requiredReps = this.RequiredReps();
@@ -149,7 +135,7 @@ namespace HouseOfReps
     {
       var avg = this.GetPRAvg();
       var std = this.StandardDeviation();
-      Console.SetCursorPosition(0, 0);
+      //Console.SetCursorPosition(0, 0);
       Console.WriteLine("After {0,4} reps, current average {1}, std dev: {2}", this.Reps, avg, std);
       Console.WriteLine("Current largest deviant {0}: {1}", this.LargestDeviant()?.Name ?? "None", this.LargestDeviation());
 
@@ -159,6 +145,28 @@ namespace HouseOfReps
       {
         Console.WriteLine("  {0,2}. {1}", index + 1, state.PrintStatus(avg, std));
       }
+    }
+
+    public void WriteConciseStatus()
+    {
+      var avg = this.GetPRAvg();
+      var std = this.StandardDeviation();
+      Console.WriteLine("After {0,4} reps, current average {1}, std dev: {2}", this.Reps, avg, std);
+      Console.WriteLine("Current largest deviant {0}: {1}", this.LargestDeviant()?.Name ?? "None", this.LargestDeviation());
+    }
+
+    private int RequiredReps()
+    {
+      int rep_max = 0;
+      int target_representation = 30000;
+      while (this.GetTotalPop() / target_representation >= rep_max)
+      {
+        target_representation += 10000;
+        rep_max += 100;
+      }
+
+      Console.WriteLine(rep_max);
+      return (int)this.GetTotalPop() / target_representation;
     }
   }
 }
