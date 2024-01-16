@@ -51,12 +51,12 @@ namespace HouseOfReps
           throw new InvalidDataException("State name doesn't match any existing states");
         }
 
-        Result? res = state.Results.Find(res => res.Party == fields[14]);
+        Result? res = state.Results.Find(res => res.Party == fields[8]);
         if (res == null)
         {
           if (votes > (int)(totalVotes / state.Reps))
           {
-            state.Results.Add(new Result(fields[14], votes));
+            state.Results.Add(new Result(fields[8], votes));
           }
         }
         else
