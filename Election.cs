@@ -103,7 +103,7 @@ namespace HouseOfReps
           }
           else
           {
-            electoralCollege.Add(res.Party, res.Reps * st.Reps);
+            electoralCollege.Add(res.Party, res.Reps);
           }
         }
       }
