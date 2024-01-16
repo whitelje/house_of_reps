@@ -135,7 +135,8 @@ namespace HouseOfReps
     {
       var avg = this.GetPRAvg();
       var std = this.StandardDeviation();
-      //Console.SetCursorPosition(0, 0);
+
+      // Console.SetCursorPosition(0, 0);
       Console.WriteLine("After {0,4} reps, current average {1}, std dev: {2}", this.Reps, avg, std);
       Console.WriteLine("Current largest deviant {0}: {1}", this.LargestDeviant()?.Name ?? "None", this.LargestDeviation());
 

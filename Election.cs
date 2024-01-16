@@ -54,11 +54,14 @@ namespace HouseOfReps
         Result? res = state.Results.Find(res => res.Party == fields[14]);
         if (res == null)
         {
-          state.Results.Add(new Result(fields[14], (double)votes / (double)totalVotes));
+          if (votes > (int)(totalVotes / state.Reps))
+          {
+            state.Results.Add(new Result(fields[14], votes));
+          }
         }
         else
         {
-          res.Reps += votes / totalVotes;
+          res.Votes += votes;
         }
       }
     }
@@ -68,7 +71,7 @@ namespace HouseOfReps
       var electoralCollege = new Dictionary<string, int>();
       foreach (State st in states)
       {
-        var result = st.Results.OrderBy(x => x.Reps).Reverse().ToList()[0];
+        var result = st.Results.OrderBy(x => x.Votes).Reverse().ToList()[0];
         if (electoralCollege.ContainsKey(result.Party))
         {
           electoralCollege[result.Party] += st.Reps;
@@ -87,15 +90,20 @@ namespace HouseOfReps
       var electoralCollege = new Dictionary<string, int>();
       foreach (State st in states)
       {
+        while (st.RepsAssigned < st.Reps)
+        {
+          st.GetResultsSortedOnReversePri()[0].AddRep();
+        }
+
         foreach (Result res in st.Results)
         {
           if (electoralCollege.ContainsKey(res.Party))
           {
-            electoralCollege[res.Party] += (int)(res.Reps * st.Reps);
+            electoralCollege[res.Party] += res.Reps;
           }
           else
           {
-            electoralCollege.Add(res.Party, (int)(res.Reps * st.Reps));
+            electoralCollege.Add(res.Party, res.Reps);
           }
         }
       }

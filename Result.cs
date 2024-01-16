@@ -9,10 +9,11 @@ namespace HouseOfReps
   {
     private readonly string party;
 
-    public Result(string party, double reps)
+    public Result(string party, int votes)
     {
       this.party = party;
-      this.Reps = reps;
+      this.Votes = votes;
+      this.Reps = 1;
     }
 
     public Result(string party)
@@ -21,7 +22,11 @@ namespace HouseOfReps
       this.Reps = 0;
     }
 
-    public double Reps { get; set; }
+    public int Votes { get; set; }
+
+    public int Reps { get; set; }
+
+    public double Pri => this.Votes / Math.Sqrt((this.Reps + 1) * this.Reps);
 
     public string Party
     {
@@ -29,6 +34,11 @@ namespace HouseOfReps
       {
         return this.party;
       }
+    }
+
+    public void AddRep()
+    {
+      this.Reps++;
     }
   }
 }
