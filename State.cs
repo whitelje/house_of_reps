@@ -55,6 +55,13 @@ namespace HouseOfReps
 
     public List<Result> Results => this.results;
 
+    public int RepsAssigned => this.Results.Sum(x => x.Reps);
+
+    public List<Result> GetResultsSortedOnReversePri()
+    {
+      return this.results.OrderBy(x => x.Pri).Reverse().ToList();
+    }
+
     public void AddRep()
     {
       this.Reps++;
