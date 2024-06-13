@@ -20,15 +20,8 @@ namespace HouseOfReps
         {
           var line = stream.ReadLine() ?? throw new EndOfStreamException();
           var values = line.Split(',');
-          int result = 0;
-          bool parsed = false;
 
-          if (values.Length > 2)
-          {
-            parsed = int.TryParse(values[2], out result);
-          }
-
-          State state = parsed ? new State(values[0], int.Parse(values[1]), result) : new State(values[0], int.Parse(values[1]));
+          State state = new State(values[0], int.Parse(values[1]));
           this.states.Add(state);
         }
       }
@@ -36,22 +29,21 @@ namespace HouseOfReps
       this.CalculateHouse();
     }
 
-    public int Reps { get; private set; }
+    private int Reps => this.states.Sum(x => x.Reps);
 
     public State? this[string i] => this.states.Find(state => state.Name == i);
 
-    public void AddRep()
+    private void AddRep()
     {
       this.GetStatesSortedOnReversePri()[0].AddRep();
-      this.Reps++;
     }
 
-    public float GetPRAvg()
+    private float GetPRAvg()
     {
-      return this.states.Sum(x => x.PR) / this.states.Count;
+      return (float)this.states.Sum(x => x.PR) / this.states.Count;
     }
 
-    public int GetTotalPop()
+    private int GetTotalPop()
     {
       return this.states.Sum(x => x.Pop);
     }
@@ -63,9 +55,7 @@ namespace HouseOfReps
 
     public List<State> GetStatesSortedOnReverseName()
     {
-      List<State> states = this.states.OrderBy(x => x.Name).ToList();
-      states.Reverse();
-      return states;
+      return this.states.OrderBy(x => x.Name).Reverse().ToList();
     }
 
     public List<State> GetStatesSortedOnPop()
@@ -75,9 +65,7 @@ namespace HouseOfReps
 
     public List<State> GetStatesSortedOnReversePop()
     {
-      List<State> states = this.states.OrderBy(x => x.Pop).ToList();
-      states.Reverse();
-      return states;
+      return this.states.OrderBy(x => x.Pop).Reverse().ToList();
     }
 
     public double StandardDeviation()
@@ -158,16 +146,17 @@ namespace HouseOfReps
 
     private int RequiredReps()
     {
-      int rep_max = 0;
-      int target_representation = 30000;
-      while (this.GetTotalPop() / target_representation >= rep_max)
+      int repMax = 0;
+      int targetRepresentation = 30000;
+      while (this.GetTotalPop() / targetRepresentation >= repMax)
       {
-        target_representation += 10000;
-        rep_max += 100;
+        targetRepresentation += 10000;
+        repMax += 100;
       }
 
-      Console.WriteLine(rep_max);
-      return (int)this.GetTotalPop() / target_representation;
+      Console.WriteLine("RepMax:  " + repMax);
+      Console.WriteLine("ReqReps: " + ((int)this.GetTotalPop() / targetRepresentation));
+      return (int)this.GetTotalPop() / targetRepresentation;
     }
   }
 }
