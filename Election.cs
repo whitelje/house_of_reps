@@ -71,7 +71,7 @@ namespace HouseOfReps
       var electoralCollege = new Dictionary<string, int>();
       foreach (State st in states)
       {
-        var result = st.Results.OrderBy(x => x.Votes).Reverse().ToList()[0];
+        var result = st.Results.OrderByDescending(x => x.Votes).ToList()[0];
         if (electoralCollege.ContainsKey(result.Party))
         {
           electoralCollege[result.Party] += st.Reps;
