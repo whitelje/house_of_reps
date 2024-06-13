@@ -2,7 +2,7 @@
   "profiles": {
     "house_of_reps": {
       "commandName": "Project",
-      "workingDirectory": ""
+      "workingDirectory": "../../../"
     }
   }
 }
